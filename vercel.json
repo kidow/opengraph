@@ -1,0 +1,9 @@
+{
+  "regions": ["icn1"],
+  "functions": {
+    "api/**": {
+      "memory": 1024,
+      "includeFiles": "static/**"
+    }
+  }
+}
