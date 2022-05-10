@@ -26,13 +26,7 @@
       crossorigin
       href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/variable/pretendardvariable.css"
     />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/themes/prism-tomorrow.min.css"
-      integrity="sha512-vswe+cgvic/XBoF1OcM/TeJ2FW0OofqAVdCZiEYkd6dwGXthvkSFWOoGGJgS2CW70VK5dQM5Oh+7ne47s74VTg=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    />
+    <link rel="stylesheet" type="text/css" href="./prism.css" />
     <meta name="robots" contnet="index, follow" />
     <meta
       name="description"
@@ -90,7 +84,7 @@
           @apply leading-8 text-lg;
         }
         .section p {
-          @apply my-4;
+          @apply my-3;
         }
       }
     </style>
@@ -101,9 +95,17 @@
           Pretendard, Roboto, 'Noto Sans KR', 'Segoe UI', 'Malgun Gothic',
           'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
       }
+      pre,
+      code {
+        white-space: pre-line !important;
+      }
+      pre {
+        font-size: 14px !important;
+      }
     </style>
   </head>
   <body class="min-h-screen bg-neutral-900 text-neutral-50">
+    <script type="text/javascript" src="./prism.js"></script>
     <div class="container max-w-screen-md px-5 mx-auto">
       <div class="pt-10 pb-20">
         <svg
@@ -156,19 +158,221 @@
           />
         </svg>
 
+        <div class="mt-5">
+          <img
+            src="https://opengraph.kidow.me/api?id=63q74z1xnjk"
+            alt=""
+            class="w-full"
+          />
+        </div>
+
         <section class="mt-10 section">
           <p>Open Graph Image를 동적으로 생성할 수 있는 페이지입니다!</p>
           <p>
             다음과 같은 <code>node.js</code> 코드를 짜면 여러분도 오픈그래프용
             이미지를 만들 수 있습니다!
           </p>
-
-          <pre class="language-javascript">
-            <code class="language-javascript">
-              <span class="token variable">const str = 'asd'</span>
+          <pre class="language-bash">
+            <code class="language-bash">
+              npm install express puppeteer-core@10.4 chrome-aws-lambda
             </code>
           </pre>
+
+          <p>
+            다음 코드를 복사 후 붙여넣기 해서 실행해서 localhost:3000에
+            접속해보면, 이미지가 나올겁니다!
+          </p>
         </section>
+        <pre class="language-javascript">
+          <code class="language-javascript">
+            import puppeteer from 'puppeteer-core'
+            import chrome from 'chrome-aws-lambda'
+            import express from 'express'
+
+            const app = express()
+
+            const executablePath =
+              process.platform === 'win32'
+                ? 'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe'
+                : process.platform === 'linux'
+                  ? '/usr/bin/google-chrome'
+                  : '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
+
+            const getHtml = () => {
+              return `
+                &lt;!DOCTYPE html&gt;
+                &lt;html&gt;
+                &lt;meta charset="utf-8" /&gt;
+                &lt;meta name="viewport" content="width=device-width, initial-scale=1" /&gt;
+                &lt;style&gt;
+                * {
+                  font-family: -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', Pretendard, Roboto, 'Noto Sans KR', 'Segoe UI', 'Malgun Gothic', sans-serif;
+                  background: #fff;
+                  color: #2f363d;
+                }
+                body {
+                  margin: 0;
+                  word-break: keep-all;
+                  padding: 5rem;
+                }
+                .container {
+                  width: 1040px;
+                  height: 600px;
+                }
+                .box {
+                  display: flex;
+                  gap: 10rem;
+                }
+                .box-left {
+                  flex: 1;
+                }
+                .logo {
+                  width: 150px;
+                }
+                .ellipsis {
+                  overflow: hidden;
+                  text-overflow: ellipsis;
+                  display: -webkit-box;
+                  -webkit-box-orient: vertical;
+                  -webkit-line-clamp: 2
+                }
+                .title {
+                  color: #2f363d;
+                  font-size: 5rem;
+                  font-weight: bold;
+                  line-height: 1.2;
+                  margin-bottom: 1.8rem;
+                  max-height: 192px;
+                }
+                .description {
+                  color: #6e7681;
+                  font-size: 2.1rem;
+                  line-height: 1.5;
+                  max-height: 100px;
+                }
+                .bottom-bar {
+                  position: fixed;
+                  bottom: 0px;
+                  left: 0px;
+                  height: 24px;
+                  width: 100%;
+                  background-color: #0ea5e9;
+                }
+                .meta {
+                  position: fixed;
+                  left: 5rem;
+                  bottom: 5rem;
+                  color: #2f363d;
+                  font-size: 2rem;
+                }
+                svg {
+                  fill: #2f363d;
+                  width: 32px;
+                  height: 32px;
+                }
+                .item-center {
+                  display: flex;
+                  align-items: center;
+                  gap: 1rem;
+                  margin-bottom: 0.8rem;
+                }
+                .item-end {
+                  display: flex;
+                  align-items: end;
+                  gap: 1rem;
+                }
+                &lt;/style&gt;
+                &lt;body&gt;
+                  &lt;div class="container"&gt;
+                    &lt;div class="box"&gt;
+                      &lt;div class="box-left"&gt;
+                        &lt;div class="title ellipsis"&gt;타이틀&lt;/div&gt;
+                        &lt;div class="description ellipsis"&gt;디스크립션&lt;/div&gt;
+                      &lt;/div&gt;
+                      &lt;div&gt;
+                        &lt;img src="https://i.pravatar.cc" alt="" class="logo" /&gt;
+                      &lt;/div&gt;
+                    &lt;/div&gt;
+                  &lt;/div&gt;
+                  &lt;div class="meta"&gt;
+                    &lt;div class="item-center"&gt;
+                      &lt;svg
+                        width="32px"
+                        height="32px"
+                        viewBox="0 0 32 32"
+                        xmlns="http://www.w3.org/2000/svg"
+                      &gt;
+                        &lt;path
+                          d="M16 0.396c-8.839 0-16 7.167-16 16 0 7.073 4.584 13.068 10.937 15.183 0.803 0.151 1.093-0.344 1.093-0.772 0-0.38-0.009-1.385-0.015-2.719-4.453 0.964-5.391-2.151-5.391-2.151-0.729-1.844-1.781-2.339-1.781-2.339-1.448-0.989 0.115-0.968 0.115-0.968 1.604 0.109 2.448 1.645 2.448 1.645 1.427 2.448 3.744 1.74 4.661 1.328 0.14-1.031 0.557-1.74 1.011-2.135-3.552-0.401-7.287-1.776-7.287-7.907 0-1.751 0.62-3.177 1.645-4.297-0.177-0.401-0.719-2.031 0.141-4.235 0 0 1.339-0.427 4.4 1.641 1.281-0.355 2.641-0.532 4-0.541 1.36 0.009 2.719 0.187 4 0.541 3.043-2.068 4.381-1.641 4.381-1.641 0.859 2.204 0.317 3.833 0.161 4.235 1.015 1.12 1.635 2.547 1.635 4.297 0 6.145-3.74 7.5-7.296 7.891 0.556 0.479 1.077 1.464 1.077 2.959 0 2.14-0.020 3.864-0.020 4.385 0 0.416 0.28 0.916 1.104 0.755 6.4-2.093 10.979-8.093 10.979-15.156 0-8.833-7.161-16-16-16z"
+                        /&gt;
+                      &lt;/svg&gt;
+                      &lt;span&gt;https://github.com/kidow&lt;/span&gt;
+                    &lt;/div&gt;
+
+                    &lt;div class="item-end"&gt;
+                      &lt;svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 330.001 330.001"
+                        style="enable-background: new 0 0 330.001 330.001"
+                        xml:space="preserve"
+                      &gt;
+                        &lt;path
+                          d="M173.871 177.097a14.982 14.982 0 0 1-8.87 2.903 14.98 14.98 0 0 1-8.871-2.903L30 84.602.001 62.603 0 275.001c.001 8.284 6.716 15 15 15L315.001 290c8.285 0 15-6.716 15-14.999V62.602l-30.001 22-126.129 92.495z"
+                        /&gt;
+                        &lt;path d="M165.001 146.4 310.087 40.001 19.911 40z" /&gt;
+                      &lt;/svg&gt;
+                      &lt;span&gt;wcgo2ling@gmail.com&lt;/span&gt;
+                    &lt;/div&gt;
+                  &lt;/div&gt;
+                  &lt;div class="bottom-bar"&gt;&lt;/div&gt;
+                &lt;/body&gt;
+                &lt;/html&gt;
+                `
+            }
+
+            const evaluate = async () => {
+              const selectors = Array.from(document.querySelectorAll('img'))
+              await Promise.all([document.fonts.ready, ...selectors.map(img => {
+                if (img.complete) {
+                  if (img.naturalHeight !== 0) return
+                  throw new Error('Image failed to load')
+                }
+                return new Promise((resolve, reject) => {
+                  img.addEventListener('load', resolve)
+                  img.addEventListener('error', reject)
+                })
+              })])
+            }
+
+            app.get('/', async (req, res) => {
+              try {
+                const html = getHtml()
+
+                const browser = await puppeteer.launch({
+                  args: [],
+                  executablePath,
+                  headless: true,
+                  ignoreHTTPSErrors: true,
+                })
+                const page = await browser.newPage()
+                await page.setViewport({ width: 1200, height: 600 })
+                await page.setContent(html, { waitUntil: 'domcontentloaded' })
+                await page.evaluate(evaluate)
+                const file = await page.screenshot({ type: 'png' })
+                await browser.close()
+                res.status(200)
+                  .setHeader('Content-Type', 'image/png')
+                  .setHeader('Cache-Control', 'public, immutable, no-transform, s-maxage=86400, max-age=86400')
+                  .end(file)
+              } catch (err) {
+                res.status(200).setHeader('Content-Type', 'image/png')
+                console.error(err)
+              }
+            })
+
+            app.listen(3000, () => console.log('Listening on 3000...'))
+          </code>
+        </pre>
       </div>
     </div>
     <a
