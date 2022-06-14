@@ -11,7 +11,7 @@ import path from 'path'
 const SUPABASE_URL = process.env.SUPABASE_URL
 const SUPABASE_KEY = process.env.SUPABASE_KEY
 
-const supabase = createClient(SUPABASE_URL, SUPABASE_KEY)
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY, { shouldThrowOnError: true })
 
 const IS_DEV = process.env.NODE_ENV === 'development'
 
@@ -177,10 +177,10 @@ app.use(express.static('public'))
 
 app.get('/api', async (req: Request<any, any, any, { id: string }>, res: Response) => {
   try {
-    const { data, error } = await supabase.from<IThumbnail>('thumbnails')
+    const { data, } = await supabase.from<IThumbnail>('thumbnails')
       .select('*')
       .eq('id', req.query.id).single()
-    if (error || !data) {
+    if (!data) {
       res.status(200).setHeader('Content-Type', 'image/png')
       fs.createReadStream(path.join(__dirname, IS_DEV ? '../../public/404.png' : 'static/404.png')).pipe(res)
       return
